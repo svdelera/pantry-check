@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pantry and Fridge Check</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow" id="today"></p>
+    <h1>Pantry and Fridge Check</h1>
+    <p class="summary" id="summary" aria-live="polite"></p>
+  </header>
+
+  <div class="acct" id="acct" hidden></div>
+
+  <div class="viewswitch" id="viewswitch" role="group" aria-label="Show">
+    <button type="button" data-act="view" data-v="check" aria-pressed="true">Check stock</button>
+    <button type="button" data-act="view" data-v="buy" aria-pressed="false">To buy<span class="n" id="navcount">0</span></button>
+  </div>
+
+  <div class="cols" id="cols" data-view="check">
+    <section class="check" aria-label="Stock">
+      <form class="add" id="addForm" autocomplete="off">
+        <label class="sr" for="addName">Items to add</label>
+        <input class="field" type="text" id="addName" placeholder="Add items, separated by commas" enterkeyhint="done">
+        <label class="sr" for="addArea">Where it lives</label>
+        <select id="addArea">
+          <option value="pantry">Pantry</option>
+          <option value="fridge">Fridge</option>
+          <option value="freezer">Freezer</option>
+          <option value="bathroom">Bathroom</option>
+        </select>
+        <button class="btn primary" type="submit">Add</button>
+        <label class="once" title="Goes on the list only and isn't tracked afterwards"><input type="checkbox" id="addOnce"> One-time buy</label>
+      </form>
+
+      <div class="filters" id="filters">
+        <button type="button" class="chip" data-act="filter" data-f="all" aria-pressed="true">Everything</button>
+        <button type="button" class="chip" data-act="filter" data-f="low" aria-pressed="false">Low and out</button>
+        <button type="button" class="chip" data-act="filter" data-f="stale" aria-pressed="false">Not checked in 2 weeks</button>
+        <label class="curwrap">Currency <input class="field" type="text" id="cur" maxlength="4" placeholder="₱ $ €" autocomplete="off"></label>
+      </div>
+
+      <div id="inventory"></div>
+      <div class="foot" id="foot"></div>
+    </section>
+
+    <aside class="buy" id="buyPanel" aria-label="Shopping list"></aside>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden><div><span id="toastMsg"></span><button type="button" data-act="undo" id="toastUndo">Undo</button></div></div>
+
+<script src="app.js"></script>
+<script type="module" src="firebase.js"></script>
+<script>
+/* If firebase.js never ran (wrong folder, or the page was opened as a file instead of through a server), say so here. */
+setTimeout(function () {
+  var a = document.getElementById('acct');
+  if (a && a.hidden) {
+    a.hidden = false;
+    a.textContent = "Sign-in didn't load. Open this page through a local server (http://localhost:8000) and check that firebase.js and firebase-config.js are in the same folder as index.html.";
+  }
+}, 6000);
+</script>
+</body>
+</html>
